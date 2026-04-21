@@ -1,5 +1,7 @@
 
  # Django
+ <img width="300" height="168" alt="imagen" src="https://github.com/user-attachments/assets/1827e789-5f25-4fb1-b52d-07d5e32043e3" />
+
  https://www.djangoproject.com/
 
 ## Installation
