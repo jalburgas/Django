@@ -61,6 +61,10 @@ Next Steps
 
     Visit http://127.0.0.1:8000/admin to access the admin panel
 
+#crear Aplicaciones
+python manage.py startapp blog
+
+
     Start creating your first app: python manage.py startapp mi_app
 
 text
