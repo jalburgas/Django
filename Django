@@ -1,61 +1,98 @@
-Manual completo: Crear un blog funcional con Django desde cero
-Este manual asume que partes de cero y quieres un blog que funcione: con página de inicio, lista de artículos, panel de administración para publicar contenido, y estilos básicos con Bootstrap. Sigue los pasos en orden y no saltes ninguno.
+# 📘 Manual completo: Crear un blog con Django desde cero
 
-Requisitos previos
-Windows 10 u 11.
+> **Objetivo:** construir un blog funcional con página de inicio, lista de artículos, panel de administración y estilos con Bootstrap.
+> **Tiempo estimado:** 30–40 minutos.
+> **Nivel:** principiante.
 
-Conexión a internet (para instalar Django y cargar Bootstrap desde CDN).
+---
 
-Una terminal (PowerShell o CMD).
+## 📑 Índice
 
-Paso 1: Instalar Python
-Ve a https://www.python.org/downloads/ y descarga el instalador de la última versión de Python .
+1. [Instalar Python](#-paso-1-instalar-python)
+2. [Crear entorno virtual](#-paso-2-crear-la-carpeta-del-proyecto-y-el-entorno-virtual)
+3. [Instalar Django](#-paso-3-instalar-django)
+4. [Crear el proyecto](#-paso-4-crear-el-proyecto-django)
+5. [Crear la app](#-paso-5-crear-la-aplicación-blog)
+6. [Definir el modelo](#-paso-6-definir-el-modelo-la-tabla-de-artículos)
+7. [Migraciones](#-paso-7-aplicar-las-migraciones)
+8. [Superusuario](#-paso-8-crear-el-superusuario)
+9. [Registrar en admin](#-paso-9-registrar-el-modelo-en-el-admin)
+10. [Vistas](#-paso-10-crear-las-vistas)
+11. [Rutas](#-paso-11-crear-las-rutas-urls)
+12. [Plantillas HTML](#-paso-12-crear-las-plantillas-html)
+13. [Arrancar el servidor](#-paso-13-arrancar-el-servidor-y-probar)
+14. [Publicar artículo](#-paso-14-publicar-tu-primer-artículo)
+15. [Idioma y zona horaria](#-paso-15-opcional-poner-todo-en-español)
+16. [Errores comunes](#-solución-de-errores-comunes)
 
-Ejecuta el instalador.
+---
 
-Marca la casilla “Add python.exe to PATH” (o “Install launcher for all users”) antes de hacer clic en “Install Now”. Esto es crítico para que los comandos funcionen después .
+## ✅ Requisitos previos
 
-Al terminar, abre una terminal nueva y verifica:
+| Requisito | Detalle |
+|---|---|
+| Sistema | Windows 10 u 11 |
+| Internet | Necesario para instalar Django y cargar Bootstrap |
+| Terminal | PowerShell o CMD |
 
-powershell
+---
+
+## 🐍 Paso 1: Instalar Python
+
+1. Descarga Python desde [python.org/downloads](https://www.python.org/downloads/).
+2. Ejecuta el instalador.
+3. ⚠️ **Marca la casilla “Add python.exe to PATH”** antes de hacer clic en *Install Now*.
+4. Abre una terminal nueva y verifica:
+
+```powershell
 python --version
-Debe mostrar un número de versión (por ejemplo, Python 3.15.x). Si dice que no se reconoce, reinstala marcando la casilla del PATH.
+```
 
-Paso 2: Crear la carpeta del proyecto y el entorno virtual
-Abre una terminal y ubícate donde quieras guardar el proyecto. Por ejemplo:
+> 💡 Debe mostrar un número de versión (ej. `Python 3.15.x`). Si dice “no se reconoce”, reinstala marcando la casilla del PATH.
 
-powershell
+---
+
+## 📁 Paso 2: Crear la carpeta del proyecto y el entorno virtual
+
+```powershell
 cd C:\pythonproyectos
 mkdir blogdjango
 cd blogdjango
-Crea el entorno virtual:
-
-powershell
 python -m venv venv
-Actívalo:
-
-powershell
 venv\Scripts\activate
-Sabrás que está activo porque verás (venv) al inicio de la línea de la terminal. Cada vez que abras una terminal nueva, deberás activarlo de nuevo .
+```
 
-Paso 3: Instalar Django
-Con el entorno virtual activo:
+Sabrás que el entorno está activo porque verás `(venv)` al inicio de la línea:
 
-powershell
+```
+(venv) C:\pythonproyectos\blogdjango>
+```
+
+> ⚠️ **Importante:** cada vez que abras una terminal nueva, deberás ejecutar `venv\Scripts\activate` de nuevo.
+
+---
+
+## 📦 Paso 3: Instalar Django
+
+```powershell
 python -m pip install django
-Verifica la instalación:
-
-powershell
 django-admin --version
-Debe mostrar un número de versión. Si da error, asegúrate de que el entorno virtual esté activo.
+```
 
-Paso 4: Crear el proyecto Django
-powershell
+> 💡 Si `django-admin --version` falla, el entorno virtual no está activo o la instalación no terminó.
+
+---
+
+## 🏗️ Paso 4: Crear el proyecto Django
+
+```powershell
 django-admin startproject miblog
 cd miblog
-La estructura que se crea es:
+```
 
-text
+Estructura generada:
+
+```
 miblog/
 ├── manage.py
 └── miblog/
@@ -64,16 +101,21 @@ miblog/
     ├── urls.py
     ├── asgi.py
     └── wsgi.py
-manage.py es el archivo que usarás para todos los comandos. Todos los comandos de aquí en adelante se ejecutan desde la carpeta miblog (donde está manage.py) .
+```
 
-Paso 5: Crear la aplicación blog
-powershell
+> ⚠️ **Todos los comandos siguientes se ejecutan desde la carpeta `miblog` (donde está `manage.py`).**
+
+---
+
+## 🧩 Paso 5: Crear la aplicación `blog`
+
+```powershell
 python manage.py startapp blog
-Esto crea la carpeta blog\ con todos los archivos necesarios (models.py, views.py, admin.py, etc.).
+```
 
-Registra la app en miblog\settings.py. Abre ese archivo y busca INSTALLED_APPS. Agrega 'blog' al final:
+Abre `miblog\settings.py` y agrega `'blog'` a `INSTALLED_APPS`:
 
-python
+```python
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -81,14 +123,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog',   # <-- agrega esta línea
+    'blog',   # 👈 agregar esta línea
 ]
-Guarda el archivo .
+```
 
-Paso 6: Definir el modelo (la tabla de artículos)
-Abre blog\models.py y reemplaza todo su contenido por:
+---
 
-python
+## 🗄️ Paso 6: Definir el modelo (la tabla de artículos)
+
+Abre `blog\models.py` y reemplaza su contenido por:
+
+```python
 from django.db import models
 
 
@@ -99,43 +144,60 @@ class Articulo(models.Model):
 
     def __str__(self):
         return self.titulo
-Guarda. Este modelo se convertirá en una tabla en la base de datos .
+```
 
-Paso 7: Aplicar las migraciones
-Ejecuta en orden:
+---
 
-powershell
+## ⚙️ Paso 7: Aplicar las migraciones
+
+```powershell
 python manage.py makemigrations
 python manage.py migrate
-El primero crea el archivo de migración con las instrucciones para crear la tabla. El segundo las aplica a la base de datos SQLite (que Django crea automáticamente) .
+```
 
-Paso 8: Crear el superusuario (para el panel de administración)
-powershell
+| Comando | Qué hace |
+|---|---|
+| `makemigrations` | Crea el archivo de migración con las instrucciones |
+| `migrate` | Aplica esas instrucciones a la base de datos SQLite |
+
+---
+
+## 👤 Paso 8: Crear el superusuario
+
+```powershell
 python manage.py createsuperuser
+```
+
 Te pedirá:
 
-Username: tu nombre de usuario (ej. juan).
+| Campo | Nota |
+|---|---|
+| **Username** | Tu nombre de usuario (ej. `juan`) |
+| **Email** | Puedes dejarlo vacío con *Enter* |
+| **Password** | Escríbela dos veces (no se muestra en pantalla) |
 
-Email: puedes dejarlo vacío presionando Enter.
+> 💡 Guarda estas credenciales, las usarás en el Paso 14.
 
-Password: escríbela dos veces (no se muestra en pantalla mientras escribes).
+---
 
-Guarda estas credenciales, las usarás en el paso 12.
+## 🛠️ Paso 9: Registrar el modelo en el admin
 
-Paso 9: Registrar el modelo en el admin
-Abre blog\admin.py y reemplaza su contenido por:
+Abre `blog\admin.py` y reemplaza su contenido por:
 
-python
+```python
 from django.contrib import admin
 from .models import Articulo
 
 admin.site.register(Articulo)
-Guarda. Con esto podrás crear, editar y borrar artículos desde el panel de administración .
+```
 
-Paso 10: Crear las vistas
-Abre blog\views.py y reemplaza su contenido por:
+---
 
-python
+## 🎨 Paso 10: Crear las vistas
+
+Abre `blog\views.py` y reemplaza su contenido por:
+
+```python
 from django.shortcuts import render
 from .models import Articulo
 
@@ -147,25 +209,35 @@ def inicio(request):
 def lista_articulos(request):
     articulos = Articulo.objects.all().order_by('-creado')
     return render(request, 'blog/lista.html', {'articulos': articulos})
-inicio muestra la página de bienvenida.
+```
 
-lista_articulos obtiene todos los artículos de la base de datos y los envía a la plantilla .
+| Vista | Función |
+|---|---|
+| `inicio` | Muestra la página de bienvenida |
+| `lista_articulos` | Obtiene todos los artículos y los envía a la plantilla |
 
-Paso 11: Crear las rutas (URLs)
-11.1 Crear blog\urls.py
-Crea un archivo nuevo llamado urls.py dentro de la carpeta blog\ con este contenido:
+---
 
-python
+## 🔗 Paso 11: Crear las rutas (URLs)
+
+### 11.1 Crear `blog\urls.py`
+
+Crea un archivo nuevo llamado `urls.py` dentro de `blog\`:
+
+```python
 from django.urls import path
 from . import views
 
 urlpatterns = [
     path('', views.lista_articulos, name='lista_articulos'),
 ]
-11.2 Configurar miblog\urls.py
-Abre miblog\urls.py (el que está dentro de la carpeta miblog, junto a settings.py) y reemplaza su contenido por:
+```
 
-python
+### 11.2 Configurar `miblog\urls.py`
+
+Abre `miblog\urls.py` (el de dentro de `miblog`, junto a `settings.py`) y reemplaza su contenido por:
+
+```python
 from django.contrib import admin
 from django.urls import path, include
 from blog import views as blog_views
@@ -175,19 +247,26 @@ urlpatterns = [
     path('', blog_views.inicio, name='inicio'),
     path('blog/', include('blog.urls')),
 ]
-Verifica que hayas editado el archivo correcto. Debe estar en C:\pythonproyectos\blogdjango\miblog\miblog\urls.py. El otro urls.py es el de la app blog y no se toca aquí .
+```
 
-Paso 12: Crear las plantillas HTML
-12.1 Crear las carpetas
-Ejecuta en la terminal (desde C:\pythonproyectos\blogdjango\miblog):
+> ⚠️ **Verifica la ruta del archivo:** debe ser `C:\pythonproyectos\blogdjango\miblog\miblog\urls.py`. El otro `urls.py` (el de `blog\`) no se toca aquí.
 
-powershell
+---
+
+## 🖼️ Paso 12: Crear las plantillas HTML
+
+### 12.1 Crear las carpetas
+
+```powershell
 mkdir blog\templates
 mkdir blog\templates\blog
-12.2 Crear base.html
-Crea el archivo blog\templates\blog\base.html con este contenido (incluye Bootstrap por CDN para que se vea bien sin escribir CSS):
+```
 
-html
+### 12.2 Crear `base.html`
+
+📄 `blog\templates\blog\base.html`
+
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -210,8 +289,7 @@ html
     </nav>
 
     <div class="container mt-4">
-        {% block contenido %}
-        {% endblock %}
+        {% block contenido %}{% endblock %}
     </div>
 
     <footer class="text-center text-muted py-4 mt-5">
@@ -221,10 +299,13 @@ html
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-12.3 Crear inicio.html
-Crea blog\templates\blog\inicio.html:
+```
 
-html
+### 12.3 Crear `inicio.html`
+
+📄 `blog\templates\blog\inicio.html`
+
+```html
 {% extends 'blog/base.html' %}
 
 {% block titulo %}Inicio — Mi Blog{% endblock %}
@@ -236,10 +317,13 @@ html
     <a class="btn btn-primary btn-lg" href="/blog/">Ver artículos</a>
 </div>
 {% endblock %}
-12.4 Crear lista.html
-Crea blog\templates\blog\lista.html:
+```
 
-html
+### 12.4 Crear `lista.html`
+
+📄 `blog\templates\blog\lista.html`
+
+```html
 {% extends 'blog/base.html' %}
 
 {% block titulo %}Artículos — Mi Blog{% endblock %}
@@ -261,51 +345,66 @@ html
     </div>
 {% endfor %}
 {% endblock %}
-Guarda los tres archivos.
+```
 
-Paso 13: Arrancar el servidor y probar
-powershell
+---
+
+## 🚀 Paso 13: Arrancar el servidor y probar
+
+```powershell
 python manage.py runserver
-Abre en el navegador:
+```
 
-URL	Qué verás
-http://127.0.0.1:8000/	Página de inicio con el mensaje de bienvenida
-http://127.0.0.1:8000/blog/	Lista de artículos (vacía al principio)
-http://127.0.0.1:8000/admin/	Panel de administración
-Si ves la página de inicio con el diseño de Bootstrap, todo funciona .
+| URL | Qué verás |
+|---|---|
+| `http://127.0.0.1:8000/` | Página de inicio con mensaje de bienvenida |
+| `http://127.0.0.1:8000/blog/` | Lista de artículos (vacía al principio) |
+| `http://127.0.0.1:8000/admin/` | Panel de administración |
 
-Paso 14: Publicar tu primer artículo
-Ve a http://127.0.0.1:8000/admin/
+> 💡 Para detener el servidor: `Ctrl + C`. Para volver a arrancarlo, asegúrate de tener el entorno virtual activo.
 
-Inicia sesión con el superusuario que creaste en el Paso 8.
+---
 
-Verás una sección llamada “Articulos” (o “Artículos”). Haz clic en “Añadir”.
+## ✍️ Paso 14: Publicar tu primer artículo
 
-Escribe un título y contenido, guarda.
+1. Ve a `http://127.0.0.1:8000/admin/`
+2. Inicia sesión con el superusuario del Paso 8.
+3. En la sección **“Articulos”** haz clic en **“Añadir”**.
+4. Escribe un título y contenido, guarda.
+5. Visita `http://127.0.0.1:8000/blog/` y verás tu artículo con estilo. 🎉
 
-Ve a http://127.0.0.1:8000/blog/ y verás tu artículo publicado con estilo.
+---
 
-Para detener el servidor: Ctrl + C en la terminal. Para volver a arrancarlo: python manage.py runserver (asegúrate de tener el entorno virtual activo).
+## 🌎 Paso 15 (opcional): Poner todo en español
 
-Paso 15 (opcional): Poner todo en español
-En miblog\settings.py cambia estas líneas:
+En `miblog\settings.py` cambia:
 
-python
+```python
 LANGUAGE_CODE = 'es'
 TIME_ZONE = 'America/Caracas'
-Reinicia el servidor para que se apliquen los cambios.
+```
 
-Solución de errores comunes
-Error	Causa	Solución
-can't open file 'manage.py'	Estás en la carpeta equivocada	Usa cd hasta la carpeta que contiene manage.py
-No module named django	El entorno virtual no está activo o Django no está instalado	Activa venv\Scripts\activate y ejecuta python -m pip install django
-No module named 'blog'	La app no está registrada o la carpeta está mal ubicada	Verifica que 'blog' esté en INSTALLED_APPS y que la carpeta blog\ esté junto a manage.py
-No module named 'blog.models'	Falta models.py o está en otra ubicación	Crea blog\models.py con el contenido del Paso 6
-TemplateDoesNotExist	La ruta de la plantilla está mal	Verifica que sea exactamente blog\templates\blog\inicio.html
-Sigues viendo el cohete de Django en /	La ruta '' no está en miblog\urls.py	Revisa el Paso 11.2. El archivo correcto es el de dentro de miblog\
-That port is already in use	Otro proceso usa el puerto 8000	Usa python manage.py runserver 8001 y abre http://127.0.0.1:8001/
-Resumen de comandos (para referencia rápida)
-powershell
+Reinicia el servidor para aplicar los cambios.
+
+---
+
+## 🧯 Solución de errores comunes
+
+| ❌ Error | 🔍 Causa | ✅ Solución |
+|---|---|---|
+| `can't open file 'manage.py'` | Estás en la carpeta equivocada | `cd` hasta la carpeta que contiene `manage.py` |
+| `No module named django` | Venv inactivo o Django no instalado | Activa `venv\Scripts\activate` y ejecuta `python -m pip install django` |
+| `No module named 'blog'` | App no registrada o carpeta mal ubicada | Verifica `'blog'` en `INSTALLED_APPS` y que `blog\` esté junto a `manage.py` |
+| `No module named 'blog.models'` | Falta `models.py` o está en otra ubicación | Crea `blog\models.py` con el contenido del Paso 6 |
+| `TemplateDoesNotExist` | Ruta de plantilla incorrecta | Debe ser exactamente `blog\templates\blog\inicio.html` |
+| Sigues viendo el cohete en `/` | Ruta `''` ausente en `miblog\urls.py` | Revisa el Paso 11.2 |
+| `That port is already in use` | Puerto 8000 ocupado | `python manage.py runserver 8001` y abre `http://127.0.0.1:8001/` |
+
+---
+
+## ⚡ Resumen de comandos
+
+```powershell
 # Crear entorno e instalar
 cd C:\pythonproyectos\blogdjango
 python -m venv venv
@@ -317,15 +416,36 @@ django-admin startproject miblog
 cd miblog
 python manage.py startapp blog
 
-# (editar settings.py para agregar 'blog')
-
 # Base de datos
 python manage.py makemigrations
 python manage.py migrate
 python manage.py createsuperuser
 
-# (crear modelos, vistas, urls, plantillas)
-
 # Arrancar
 python manage.py runserver
-Con esto tienes un blog funcional: publicas desde el admin, y los artículos se muestran en una página con diseño limpio. A partir de aquí puedes agregar imágenes, páginas individuales por artículo, comentarios o formularios de contacto.
+```
+
+---
+
+## 🎯 Resultado final
+
+```
+miblog/
+├── manage.py
+├── blog/
+│   ├── templates/blog/
+│   │   ├── base.html
+│   │   ├── inicio.html
+│   │   └── lista.html
+│   ├── admin.py
+│   ├── models.py
+│   ├── urls.py
+│   └── views.py
+└── miblog/
+    ├── settings.py
+    └── urls.py
+```
+
+> ✅ Tienes un blog funcional: publicas desde el admin y los artículos se muestran con diseño limpio. A partir de aquí puedes agregar imágenes, páginas individuales por artículo, comentarios o formularios de contacto.
+
+
