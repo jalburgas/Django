@@ -1,39 +1,38 @@
-# 📘 Manual completo: Crear un blog con Django desde cero
+# 📘 Manual: Crear un blog con Django desde cero
 
 > **Objetivo:** construir un blog funcional con página de inicio, lista de artículos, panel de administración y estilos con Bootstrap.
-> **Tiempo estimado:** 30–40 minutos.
-> **Nivel:** principiante.
+> **Tiempo estimado:** 30–40 minutos · **Nivel:** principiante
 
 ---
 
 ## 📑 Índice
 
 1. [Instalar Python](#-paso-1-instalar-python)
-2. [Crear entorno virtual](#-paso-2-crear-la-carpeta-del-proyecto-y-el-entorno-virtual)
+2. [Entorno virtual](#-paso-2-crear-la-carpeta-del-proyecto-y-el-entorno-virtual)
 3. [Instalar Django](#-paso-3-instalar-django)
 4. [Crear el proyecto](#-paso-4-crear-el-proyecto-django)
 5. [Crear la app](#-paso-5-crear-la-aplicación-blog)
-6. [Definir el modelo](#-paso-6-definir-el-modelo-la-tabla-de-artículos)
-7. [Migraciones](#-paso-7-aplicar-las-migraciones)
+6. [Modelo](#-paso-6-definir-el-modelo-la-tabla-de-artículos)
+7. [Migraciones](#️-paso-7-aplicar-las-migraciones)
 8. [Superusuario](#-paso-8-crear-el-superusuario)
-9. [Registrar en admin](#-paso-9-registrar-el-modelo-en-el-admin)
+9. [Admin](#️-paso-9-registrar-el-modelo-en-el-admin)
 10. [Vistas](#-paso-10-crear-las-vistas)
 11. [Rutas](#-paso-11-crear-las-rutas-urls)
-12. [Plantillas HTML](#-paso-12-crear-las-plantillas-html)
-13. [Arrancar el servidor](#-paso-13-arrancar-el-servidor-y-probar)
-14. [Publicar artículo](#-paso-14-publicar-tu-primer-artículo)
-15. [Idioma y zona horaria](#-paso-15-opcional-poner-todo-en-español)
-16. [Errores comunes](#-solución-de-errores-comunes)
+12. [Plantillas](#️-paso-12-crear-las-plantillas-html)
+13. [Servidor](#-paso-13-arrancar-el-servidor-y-probar)
+14. [Publicar](#️-paso-14-publicar-tu-primer-artículo)
+15. [Español](#-paso-15-opcional-poner-todo-en-español)
+16. [Errores](#-solución-de-errores-comunes)
 
 ---
 
 ## ✅ Requisitos previos
 
 | Requisito | Detalle |
-|---|---|
-| Sistema | Windows 10 u 11 |
-| Internet | Necesario para instalar Django y cargar Bootstrap |
-| Terminal | PowerShell o CMD |
+| :-- | :-- |
+| 🖥️ Sistema | Windows 10 u 11 |
+| 🌐 Internet | Para instalar Django y cargar Bootstrap |
+| ⌨️ Terminal | PowerShell o CMD |
 
 ---
 
@@ -156,7 +155,7 @@ python manage.py migrate
 ```
 
 | Comando | Qué hace |
-|---|---|
+| :-- | :-- |
 | `makemigrations` | Crea el archivo de migración con las instrucciones |
 | `migrate` | Aplica esas instrucciones a la base de datos SQLite |
 
@@ -171,7 +170,7 @@ python manage.py createsuperuser
 Te pedirá:
 
 | Campo | Nota |
-|---|---|
+| :-- | :-- |
 | **Username** | Tu nombre de usuario (ej. `juan`) |
 | **Email** | Puedes dejarlo vacío con *Enter* |
 | **Password** | Escríbela dos veces (no se muestra en pantalla) |
@@ -212,7 +211,7 @@ def lista_articulos(request):
 ```
 
 | Vista | Función |
-|---|---|
+| :-- | :-- |
 | `inicio` | Muestra la página de bienvenida |
 | `lista_articulos` | Obtiene todos los artículos y los envía a la plantilla |
 
@@ -356,7 +355,7 @@ python manage.py runserver
 ```
 
 | URL | Qué verás |
-|---|---|
+| :-- | :-- |
 | `http://127.0.0.1:8000/` | Página de inicio con mensaje de bienvenida |
 | `http://127.0.0.1:8000/blog/` | Lista de artículos (vacía al principio) |
 | `http://127.0.0.1:8000/admin/` | Panel de administración |
@@ -391,7 +390,7 @@ Reinicia el servidor para aplicar los cambios.
 ## 🧯 Solución de errores comunes
 
 | ❌ Error | 🔍 Causa | ✅ Solución |
-|---|---|---|
+| :-- | :-- | :-- |
 | `can't open file 'manage.py'` | Estás en la carpeta equivocada | `cd` hasta la carpeta que contiene `manage.py` |
 | `No module named django` | Venv inactivo o Django no instalado | Activa `venv\Scripts\activate` y ejecuta `python -m pip install django` |
 | `No module named 'blog'` | App no registrada o carpeta mal ubicada | Verifica `'blog'` en `INSTALLED_APPS` y que `blog\` esté junto a `manage.py` |
@@ -447,5 +446,23 @@ miblog/
 ```
 
 > ✅ Tienes un blog funcional: publicas desde el admin y los artículos se muestran con diseño limpio. A partir de aquí puedes agregar imágenes, páginas individuales por artículo, comentarios o formularios de contacto.
+
+---
+
+## 🏷️ Etiquetas para tu repositorio de GitHub
+
+```
+#django #python #blog #bootstrap #tutorial #principiantes #webdev #backend
+```
+
+### 📌 Descripción sugerida para el repo
+
+> Blog funcional hecho con Django y Bootstrap. Incluye panel de administración para publicar artículos, lista de publicaciones con diseño responsive y guía paso a paso para replicarlo desde cero.
+
+### 📂 Nombre sugerido del repositorio
+
+```
+django-blog-tutorial
+```.
 
 
